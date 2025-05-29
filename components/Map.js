@@ -3,7 +3,16 @@ import { MapContainer, TileLayer, Marker, Polyline, useMapEvents } from 'react-l
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
 
-const defaultIcon = new L.Icon.Default()
+// Corriger les icônes manquants dans certains contextes Next.js/Vercel
+import icon from 'leaflet/dist/images/marker-icon.png'
+import iconShadow from 'leaflet/dist/images/marker-shadow.png'
+
+let DefaultIcon = L.icon({
+  iconUrl: icon.src || icon,
+  shadowUrl: iconShadow.src || iconShadow,
+  iconAnchor: [12, 41],
+})
+L.Marker.prototype.options.icon = DefaultIcon
 
 export default function Map({ route, onPlan }) {
   const [position, setPosition] = useState(null)
@@ -48,21 +57,21 @@ export default function Map({ route, onPlan }) {
     <>
       <div className="mb-2 text-center">
         <select value={mode} onChange={e => setMode(e.target.value)} className="p-2 border rounded">
-          <option value="driving-car">Voiture</option>
-          <option value="foot-walking">Piéton</option>
-          <option value="cycling-regular">Vélo</option>
+          <option value="driving-car">🚗 Voiture</option>
+          <option value="foot-walking">🚶 Piéton</option>
+          <option value="cycling-regular">🚴 Vélo</option>
         </select>
         <p className="text-xs text-gray-600">Cliquez sur la carte pour définir les points</p>
       </div>
       {position && (
-        <MapContainer center={position} zoom={13} style={{ height: '100%', width: '100%' }}>
+        <MapContainer center={position} zoom={13} style={{ height: '500px', width: '100%' }}>
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             attribution="&copy; OpenStreetMap contributors"
           />
           <ClickHandler />
-          {from && <Marker position={from} icon={defaultIcon} />}
-          {to && <Marker position={to} icon={defaultIcon} />}
+          {from && <Marker position={from} />}
+          {to && <Marker position={to} />}
           {route.length > 0 && <Polyline positions={route} color="blue" />}
         </MapContainer>
       )}
