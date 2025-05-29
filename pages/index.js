@@ -39,12 +39,12 @@ export default function Home() {
         </ul>
       </div>
 
-      <div className="max-w-4xl mx-auto h-[500px]">
+      <div className="max-w-4xl mx-auto">
         <Map route={route} onPlan={handlePlan} />
       </div>
 
       {info && (
-        <div className="mt-4 text-center text-sm text-gray-700">
+        <div className="mt-6 text-center text-sm text-gray-700">
           <p>🚗 Distance : <strong>{info.distance} km</strong></p>
           <p>⏱️ Durée estimée : <strong>{info.duration} min</strong></p>
           <p>⚙️ Mode de transport : <strong>{info.mode}</strong></p>
